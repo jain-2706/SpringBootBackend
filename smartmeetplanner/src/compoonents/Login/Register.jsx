@@ -2,27 +2,37 @@ import { useState } from "react";
 import { InputField } from "./InputField";
 import { PrimaryButton } from "./PrimaryButton";
 import { AuthCard } from "./AuthCard";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     email: "",
-    mobile: "",
-    employeeId: "",
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // Handle input change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = () => {
-    const handleRegister = async () => {
+  // ✅ FIXED: Direct async function
+  const handleRegister = async () => {
+    // Basic validation
+    if (!form.email || !form.password || !form.username) {
+      alert("Please fill required fields");
+      return;
+    }
+    console.log("email: ", form.email)
+    console.log("password: ",form.password)
+    setLoading(true);
+
     try {
-      const res = await fetch("http://localhost:8080/register", {
+      const res = await fetch("https://motivator-antelope-cucumber.ngrok-free.dev/addUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,19 +43,20 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // ✅ Success message
+        // ✅ Success
         alert("Registration successful!");
-
-        // ✅ Redirect to login
-        navigate("/login");
+        console.log("registered: ", data);
+        // ✅ Redirect
+        navigate("/login", { replace: true });
       } else {
         alert(data.message || "Registration failed");
       }
     } catch (err) {
       console.error(err);
       alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
-  };
   };
 
   return (
@@ -76,20 +87,6 @@ export default function Register() {
       />
 
       <InputField
-        label="Mobile"
-        name="mobile"
-        value={form.mobile}
-        onChange={handleChange}
-      />
-
-      <InputField
-        label="Employee ID"
-        name="employeeId"
-        value={form.employeeId}
-        onChange={handleChange}
-      />
-
-      <InputField
         label="Password"
         type="password"
         name="password"
@@ -97,7 +94,11 @@ export default function Register() {
         onChange={handleChange}
       />
 
-      <PrimaryButton text="Register" onClick={handleRegister} />
+      <PrimaryButton
+        text={loading ? "Registering..." : "Register"}
+        
+        onClick={handleRegister}
+      />
     </AuthCard>
   );
 }

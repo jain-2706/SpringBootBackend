@@ -13,17 +13,67 @@ export default function Login() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = async () => {
-        // Call your backend here
-        const success = true; // replace with API response
+    // const handleLogin = async () => {
+    //     try{
+    //         // Call your backend here
+    //         const res = await fetch("https://motivator-antelope-cucumber.ngrok-free.dev/loginUser",{
+    //             method:"POST",
+    //             headers:{
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(form), // { email, password }
+    //         })
+    //         const data = await res.text();
+    //         console.log(data)
+    //         if (res.status === 201) {
+    //             // ✅ Store tokens
+    //             localStorage.setItem("refreshToken", data.refreshToken);
 
-        if (success) {
-            navigate("/"); // redirect to home page
-        }
-        else {
+    //             // ✅ Store user
+    //             localStorage.setItem("user", JSON.stringify(data.user));
+
+    //             // ✅ Redirect to home
+    //             navigate("/");
+    //         }
+    //         else {
+    //             alert(data.message || "Invalid credentials");
+    //         }
+    //     }
+    //     catch (err) {
+    //         console.error(err);
+    //         alert("Server error");
+    //     }
+    // };
+
+    const handleLogin = async () => {
+    try {
+        const res = await fetch("https://motivator-antelope-cucumber.ngrok-free.dev/loginUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+        });
+
+        const token = await res.text();
+
+        console.log(token);
+
+        if (res.ok) {
+            // ✅ Store token
+            localStorage.setItem("token", token);
+
+            // ✅ Redirect
+            navigate("/");
+        } else {
             alert("Invalid credentials");
         }
-    };
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error");
+    }
+};
 
     return (
         <AuthCard

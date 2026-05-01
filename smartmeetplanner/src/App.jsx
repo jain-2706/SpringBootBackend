@@ -6,10 +6,12 @@ import { Outlet } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const [user, setUser] = useState(
+  JSON.parse(localStorage.getItem("user"))
+  );
   return (
     <>
-      <Header/>
+      <Header user={user} setUser={setUser} />
       <Outlet/>
       <Footer/>
     </>

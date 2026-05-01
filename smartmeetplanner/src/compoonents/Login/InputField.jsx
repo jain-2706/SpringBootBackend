@@ -1,10 +1,11 @@
-export function InputField({ label, type = "text", placeholder, value, onChange }) {
+export function InputField({ label, type = "text", name, placeholder, value, onChange }) {
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {label}
       </label>
       <input
+        name = {name}
         type={type}
         placeholder={placeholder}
         value={value}

@@ -6,10 +6,13 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Home from './compoonents/Home/Home.jsx'
 import Login from './compoonents/Login/Login.jsx'
 import Register from './compoonents/Login/Register.jsx'
-
+import PrivateRoute from './PrivateRoute.jsx'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App/>}>
+      {/* <Route path="" element={<PrivateRoute>
+      <Home />
+    </PrivateRoute>}/> */}
       <Route path="" element={<Home/>}/>
       <Route path="Login" element={<Login/>}/>
       <Route path="Register" element={<Register/>}/>
