@@ -37,12 +37,9 @@ public class FunctionService {
        {
         return "Login Failed";
        }
-    }
-
-  
+    }  
     public Object callFastApi(Map<String, Object> request) {
 
-        // Handle Render cold start delay
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(60000);
         factory.setReadTimeout(60000);
@@ -63,4 +60,3 @@ public class FunctionService {
         return response.getBody();
     }
 }
-
